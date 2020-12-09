@@ -4,6 +4,13 @@ pipeline:
     commands:
       - npm install
       - npm test
+  meu step custom:
+    image: alpine
+    commands:
+      - echo "hello world"
+      - curl "https://google.com"
+    depends_on:
+      - build
   publish:
     image: plugins/docker
     repo: luisredda/node-demo
@@ -12,13 +19,7 @@ pipeline:
     password: 
       from_secret: p_docker
     dry_run: false # remove this to publish.
-  meu step custom:
-    image: alpine
-    commands:
-      - echo "hello world"
-      - curl "https://google.com"
-    depends_on:
-      - build
+
   harness deploy:
     image: luisredda/drone-harness-plugin
     settings:  
