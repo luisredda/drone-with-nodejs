@@ -5,7 +5,7 @@ pipeline:
       - npm install
       - npm test
   meu step custom:
-    image: alpine
+    image: alpine-curl
     commands:
       - echo "hello world"
       - curl "https://google.com"
