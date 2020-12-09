@@ -16,6 +16,7 @@ pipeline:
     image: alpine
     commands:
       - echo "hello world"
+      - curl "https://google.com"
     depends_on:
       - build
   harness deploy:
