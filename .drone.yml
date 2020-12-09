@@ -5,7 +5,7 @@ pipeline:
       - npm install
       - npm test
   meu step custom:
-    image: curl/curl-docker
+    image: centos:7
     commands:
       - echo "hello world"
       - curl "https://google.com"
