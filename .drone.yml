@@ -3,4 +3,4 @@ pipeline:
     image: centos:7
     commands:
       - echo "hello world"
-      - echo "https://google.com/q?=${DRONE_COMMIT}"
+      - curl -X POST "POST -H "Content-Type: application/json" -d '{"text": "build ${DRONE_BUILD_NUMBER} executado com sucesso !"}' "https://chat.googleapis.com/v1/spaces/123/messages?key=123";"
