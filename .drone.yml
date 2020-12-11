@@ -1,6 +1,52 @@
 pipeline:
+  build:
+    image: node
+    commands:
+      - npm install
+      - npm test
+  publish:
+    image: plugins/docker
+    repo: luisredda/node-demo
+    username:
+      from_secret: u_docker
+    password: 
+      from_secret: p_docker
+    dry_run: false # remove this to publish.
   meu step custom:
-    image: centos:7
+    image: alpine
     commands:
       - echo "hello world"
-      - curl -X POST "POST -H "Content-Type: application/json" -d '{"text": "build ${DRONE_BUILD_NUMBER} executado com sucesso !"}' "https://chat.googleapis.com/v1/spaces/123/messages?key=123";"
+    depends_on:
+      - build
+  harness deploy:
+    image: luisredda/drone-harness-plugin
+    settings:  
+    application: "Harness Demo Application"
+    type: "PIPELINE"
+    entityname: "CD Pipeline"
+    accountid:
+      from_secret: harness_acctid
+    apikey: 
+      from_secret: harness_secret
+    body: |
+     variableInputs: [ 
+      {
+        name: "Service"
+        variableValue: {
+          type: NAME
+          value: "order-service"
+        }
+      }
+      ], 
+      serviceInputs: [ {
+        name: "order-service", 
+        artifactValueInput: {
+          valueType: BUILD_NUMBER
+          buildNumber: {
+            buildNumber: "1"
+      artifactSourceName: "harness_todolist-sample"
+          }
+        }}  ]
+    when:
+      repo:
+      - luisredda/drone-with-nodejs
