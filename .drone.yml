@@ -1,54 +1,6 @@
 pipeline:
-  build:
-    image: node
-    commands:
-      - npm install
-      - npm test
   meu step custom:
     image: centos:7
     commands:
       - echo "hello world"
-      - curl "https://google.com"
-    depends_on:
-      - build
-  publish:
-    image: plugins/docker
-    repo: luisredda/node-demo
-    username:
-      from_secret: u_docker
-    password: 
-      from_secret: p_docker
-    dry_run: false # remove this to publish.
-
-  harness deploy:
-    image: luisredda/drone-harness-plugin
-    settings:  
-    application: "Harness Demo Application"
-    type: "PIPELINE"
-    entityname: "CD Pipeline"
-    accountid:
-      from_secret: harness_acctid
-    apikey: 
-      from_secret: harness_secret
-    body: |
-     variableInputs: [ 
-      {
-        name: "Service"
-        variableValue: {
-          type: NAME
-          value: "order-service"
-        }
-      }
-      ], 
-      serviceInputs: [ {
-        name: "order-service", 
-        artifactValueInput: {
-          valueType: BUILD_NUMBER
-          buildNumber: {
-            buildNumber: "1"
-      artifactSourceName: "harness_todolist-sample"
-          }
-        }}  ]
-    when:
-      repo:
-      - luisredda/drone-with-nodejs
+      - echo "https://google.com/q?=${DRONE_COMMIT}"
