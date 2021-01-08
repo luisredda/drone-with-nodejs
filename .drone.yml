@@ -34,7 +34,7 @@ pipeline:
         name: "Service"
         variableValue: {
           type: NAME
-          value: "order-service"
+          value: "order-service2"
         }
       }
       ], 
